@@ -75,13 +75,10 @@ void PlotArea::update()
                 break;
             }
             double x = (double)(((quint32)point.x())%((quint32)(windowLengthInSeconds*stream->getSamplesPerSeconds())))/((double)stream->getSamplesPerSeconds());
-            qDebug() << "-------------------------------- >>>>>>" << x << point.y();
             dataMap->insert(x, QCPData(x,point.y()));
         }
         pointStream[stream]->setData(dataMap, false);
     }
-
-    //axisRect()->axis(QCPAxis::atLeft)->rescale(true);
 
     replot();
 }

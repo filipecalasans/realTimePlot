@@ -35,26 +35,16 @@ void MainWindow::timerEvent(QTimerEvent *event)
 {
     Q_UNUSED(event)
 
-    static int frame_count = 0;
-
     const double sineFrequency = 2.0; // 2Hz
     const double phase = 0.0;
 
     for(int i=0; i<dataPoints.size(); i++) {
-        double value = qSin(2.0*M_PI*sineFrequency*sampleNumber*(((double)SAMPLE_GENERATION_PERIOD/1000.0) + phase));
+        double value = qSin(2.0*M_PI*sineFrequency*sampleNumber*(((double)SAMPLE_GENERATION_PERIOD/1000.0)));
         //qDebug() << sampleNumber << value;
         QList<QPointF> data;
         data << QPointF(sampleNumber, value);
         dataPoints.at(i)->appendPoints(data);
     }
 
-    if(SAMPLE_GENERATION_PERIOD * frame_count >= PlotArea::PERIOD_OF_FRAMES) {
-        //ui->plotArea->update();
-        frame_count = -1;
-        //qDebug() << "update Plot";
-    }
-
     sampleNumber++;
-    frame_count++;
-
 }

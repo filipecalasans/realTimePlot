@@ -44,7 +44,6 @@ void PointStream::appendPoints(const QList<QPointF> &newPoints)
 }
 
 void PointStream::discardPoints(int numPoints) {
-    qDebug() << "------------------------------------------>> DISCARD" << numPoints;
     for(int i=0; i<numPoints; i++) {
         //Recomendação do Qt para QList<T>.takeFirst()
         //Verification recommended in Qt docummentation
