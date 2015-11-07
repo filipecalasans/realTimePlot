@@ -15,6 +15,9 @@ class PlotArea : public QCustomPlot
     Q_OBJECT
 
 public:
+
+    static const int PERIOD_OF_FRAMES = 100; //100 ms - 10fps
+
     explicit PlotArea(QWidget *parent = 0);
     ~PlotArea();
 
@@ -28,7 +31,6 @@ public:
 
 private:
 
-    static const int PERIOD_OF_FRAMES = 100;
     Ui::PlotArea *ui;
     QMap<PointStream *, QCPGraph *> pointStream;
     double windowLengthInSeconds = 4.0;

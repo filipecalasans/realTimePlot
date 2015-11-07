@@ -16,6 +16,7 @@ PlotArea::PlotArea(QWidget *parent) :
     wideAxisRect->axis(QCPAxis::atRight, 0)->setTickLabels(true);
     wideAxisRect->removeAxis(wideAxisRect->axis(QCPAxis::atRight));
     wideAxisRect->removeAxis(wideAxisRect->axis(QCPAxis::atTop));
+    wideAxisRect->axis(QCPAxis::atLeft)->setRange(-1.5, 1.5);
     plotLayout()->addElement(0, 0, wideAxisRect);
 
     startTimer(PERIOD_OF_FRAMES);
@@ -29,7 +30,11 @@ PlotArea::~PlotArea()
 void PlotArea::addPointStream(PointStream *points)
 {
     QCPGraph *graph = addGraph(axisRect(0)->axis(QCPAxis::atBottom), axisRect(0)->axis(QCPAxis::atLeft));
-
+    QPen pen;
+    pen.setColor(QColor(Qt::red));
+    pen.setWidth(1.6);
+    graph->setPen(pen);
+    graph->setLineStyle(QCPGraph::lsLine);
     /*
      * Adiciona uma Fonte de pontos e uma nova curva associada
      * a essa fonte de pontos na área de plotagem.
@@ -48,6 +53,7 @@ double PlotArea::getWindowLengthInSeconds() const
 void PlotArea::setWindowLengthInSeconds(double value)
 {
     windowLengthInSeconds = value;
+    axisRect()->axis(QCPAxis::atBottom)->setRange(0, windowLengthInSeconds);
 }
 
 void PlotArea::timerEvent(QTimerEvent *event)
@@ -61,20 +67,21 @@ void PlotArea::update()
     for(PointStream *stream : pointStream.keys()) {
         QList<QPointF> data = stream->getRecentPoints(stream->getSamplesPerSeconds() * windowLengthInSeconds);
         QCPDataMap *dataMap = new QCPDataMap();
-        quint32 windowNumberLastSample = ((quint32)data.last().x())%((quint32)(windowLengthInSeconds*stream->getSamplesPerSeconds()));
-        for(int i=data.size()-1; i>=0; i++) {
+        quint32 windowNumberLastSample = ((quint32)data.last().x())/((quint32)(windowLengthInSeconds*stream->getSamplesPerSeconds()));
+        for(int i=data.size()-1; i>=0; i--) {
             QPointF point = data[i];
-            quint32 windowNumber = ((quint32)point.x())%((quint32)(windowLengthInSeconds*stream->getSamplesPerSeconds()));
+            quint32 windowNumber = ((quint32)point.x())/((quint32)(windowLengthInSeconds*stream->getSamplesPerSeconds()));
             if(windowNumber != windowNumberLastSample) {
                 break;
             }
-            double x = ((double)stream->getSamplesPerSeconds())/point.x();
+            double x = (double)(((quint32)point.x())%((quint32)(windowLengthInSeconds*stream->getSamplesPerSeconds())))/((double)stream->getSamplesPerSeconds());
+            qDebug() << "-------------------------------- >>>>>>" << x << point.y();
             dataMap->insert(x, QCPData(x,point.y()));
         }
         pointStream[stream]->setData(dataMap, false);
     }
 
-    axisRect()->axis(QCPAxis::atLeft)->rescale(true);
+    //axisRect()->axis(QCPAxis::atLeft)->rescale(true);
 
     replot();
 }
