@@ -3,11 +3,13 @@
 
 #include <QWidget>
 
+#include "QCustomPlot/qcustomplot.h"
+
 namespace Ui {
 class PlotArea;
 }
 
-class PlotArea : public QWidget
+class PlotArea : public QCustomPlot
 {
     Q_OBJECT
 
@@ -17,6 +19,7 @@ public:
 
 private:
     Ui::PlotArea *ui;
+
 };
 
 #endif // PLOTAREA_H

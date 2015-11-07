@@ -16,11 +16,13 @@ CONFIG += c++11
 SOURCES += main.cpp\
         mainwindow.cpp \
     QCustomPlot/qcustomplot.cpp \
-    QCustomPlot/plotarea.cpp
+    plotarea.cpp \
+    pointstream.cpp
 
 HEADERS  += mainwindow.h \
     QCustomPlot/qcustomplot.h \
-    QCustomPlot/plotarea.h
+    plotarea.h \
+    pointstream.h
 
 FORMS    += mainwindow.ui \
-    QCustomPlot/plotarea.ui
+    plotarea.ui
