@@ -4,7 +4,7 @@
 #include <QDebug>
 #include <qmath.h>
 
-#define POINT_STREAM_NUM   1
+#define POINT_STREAM_NUM 1
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -39,7 +39,7 @@ void MainWindow::timerEvent(QTimerEvent *event)
     const double phase = 0.0;
 
     for(int i=0; i<dataPoints.size(); i++) {
-        double value = qSin(2.0*M_PI*sineFrequency*sampleNumber*(((double)SAMPLE_GENERATION_PERIOD/1000.0)));
+        double value = qSin(2.0*M_PI*sineFrequency*sampleNumber*(((double)SAMPLE_GENERATION_PERIOD/1000.0) ));
         //qDebug() << sampleNumber << value;
         QList<QPointF> data;
         data << QPointF(sampleNumber, value);

@@ -80,6 +80,8 @@ void PlotArea::update()
         pointStream[stream]->setData(dataMap, false);
     }
 
+    //axisRect()->axis(QCPAxis::atLeft)->rescale(true);
+
     replot();
 }
 

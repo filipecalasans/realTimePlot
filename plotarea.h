@@ -16,7 +16,7 @@ class PlotArea : public QCustomPlot
 
 public:
 
-    static const int PERIOD_OF_FRAMES = 100; //100 ms - 10fps
+    static const int PERIOD_OF_FRAMES = 50; //100 ms - 20fps
 
     explicit PlotArea(QWidget *parent = 0);
     ~PlotArea();
