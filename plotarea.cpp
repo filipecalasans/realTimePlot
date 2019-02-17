@@ -27,22 +27,20 @@ PlotArea::~PlotArea()
     delete ui;
 }
 
-void PlotArea::addPointStream(PointStream *points)
+void PlotArea::addPointStream(QSharedPointer<PointStream> points)
 {
     QCPGraph *graph = addGraph(axisRect(0)->axis(QCPAxis::atBottom), axisRect(0)->axis(QCPAxis::atLeft));
     QPen pen;
     pen.setColor(QColor(Qt::red));
-    pen.setWidth(1.6);
+    pen.setWidth(1);
     graph->setPen(pen);
     graph->setLineStyle(QCPGraph::lsLine);
+
     /*
-     * Adiciona uma Fonte de pontos e uma nova curva associada
-     * a essa fonte de pontos na área de plotagem.
-     *
-     * Add a new point stream and a graph that is associated
-     * to this pointStream to the Plot Area.
+     * Keep a reference container to store shared pointer.
      */
-    pointStream.insert(points, graph);
+    pointStream.insert(points.get(), graph);
+    references.insert(points.get(), points);
 }
 
 double PlotArea::getWindowLengthInSeconds() const
@@ -69,12 +67,14 @@ void PlotArea::update()
         QCPDataMap *dataMap = new QCPDataMap();
         quint32 windowNumberLastSample = ((quint32)data.last().x())/((quint32)(windowLengthInSeconds*stream->getSamplesPerSeconds()));
         for(int i=data.size()-1; i>=0; i--) {
-            QPointF point = data[i];
-            quint32 windowNumber = ((quint32)point.x())/((quint32)(windowLengthInSeconds*stream->getSamplesPerSeconds()));
+            const QPointF& point = data[i];
+            quint32 windowNumber = static_cast<quint32>(point.x())/
+                    (static_cast<quint32>(windowLengthInSeconds*stream->getSamplesPerSeconds()));
             if(windowNumber != windowNumberLastSample) {
                 break;
             }
-            double x = (double)(((quint32)point.x())%((quint32)(windowLengthInSeconds*stream->getSamplesPerSeconds())))/((double)stream->getSamplesPerSeconds());
+            quint64 pointX = static_cast<quint32>(point.x());
+            double x = ((pointX)%((quint64)(windowLengthInSeconds*stream->getSamplesPerSeconds())))/((double)stream->getSamplesPerSeconds());
             dataMap->insert(x, QCPData(x,point.y()));
         }
         pointStream[stream]->setData(dataMap, false);

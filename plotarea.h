@@ -2,7 +2,7 @@
 #define PLOTAREA_H
 
 #include <QWidget>
-
+#include <QSharedPointer>
 #include "QCustomPlot/qcustomplot.h"
 #include "pointstream.h"
 
@@ -18,10 +18,11 @@ public:
 
     static const int PERIOD_OF_FRAMES = 50; //100 ms - 20fps
 
-    explicit PlotArea(QWidget *parent = 0);
+    explicit PlotArea(QWidget *parent = nullptr);
     ~PlotArea();
 
-    void addPointStream (PointStream *points);
+    void addPointStream (QSharedPointer<PointStream> points);
+
     void update();
 
     double getWindowLengthInSeconds() const;
@@ -33,10 +34,8 @@ private:
 
     Ui::PlotArea *ui;
     QMap<PointStream *, QCPGraph *> pointStream;
+    QMap<PointStream *, QSharedPointer<PointStream> > references;
     double windowLengthInSeconds = 4.0;
-
-
-
 };
 
 #endif // PLOTAREA_H

@@ -11,7 +11,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = realTimePlot
 TEMPLATE = app
 
-CONFIG += c++11
+CONFIG += c++17
 
 SOURCES += main.cpp\
         mainwindow.cpp \

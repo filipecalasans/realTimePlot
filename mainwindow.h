@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QObject>
+#include <QSharedPointer>
 
 #include <pointstream.h>
 
@@ -15,7 +16,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = 0);
+    explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
 
@@ -25,7 +26,7 @@ private:
     static const int SAMPLE_GENERATION_PERIOD = 5; // 5 ms
     quint64 sampleNumber = 0;
 
-    QList <PointStream *> dataPoints;
+    QList <QSharedPointer<PointStream> > dataPoints;
 
     void timerEvent(QTimerEvent *event);
 };
