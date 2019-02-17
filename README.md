@@ -1,4 +1,4 @@
-# Real Time Plot Example
+# Real Time Plot
 
 This example aims to demonstrate how to buid a Real Time Plot
 application using QCustomPlot library to Qt.
