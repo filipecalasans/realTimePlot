@@ -54,7 +54,7 @@ This example instantiates a fixed number of curves each one backed for its own s
 
 We simulate a stream of points coming in real time in the **timerEvent**, which runs at the periodicity of **SAMPLE_GENERATION_PERIOD** ms.
 
-You might want to check the file MainWindow.ui to see how we placed the **PlotAre** component to the MainWindow. However, if you need a more dynamic layout you might want to instantiate it programmatically.
+You might want to check the file MainWindow.ui to see how we placed the **PlotArea** component to the MainWindow. However, if you need a more dynamic layout you might want to instantiate it programmatically.
 
 ```c++
 #include "mainwindow.h"
