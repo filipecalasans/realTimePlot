@@ -112,3 +112,9 @@ void MainWindow::timerEvent(QTimerEvent *event)
 ```
 
 ![](example.gif)
+
+## TODO
+
+* Implement Circular Buffer
+* Optimize the class **Poitstream** to use Circular Buffer
+* Implement GraphFactory to handle CGraph Style
