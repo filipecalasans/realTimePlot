@@ -33,16 +33,15 @@ void MainWindow::timerEvent(QTimerEvent *event)
 {
     Q_UNUSED(event)
 
-    const double sineFrequency = 1.0; // 2Hz
-    //const double phase = 0.0;
+    constexpr double freq = 1.0; // 2Hz
+    const double samplePeriod = static_cast<double>(SAMPLE_GENERATION_PERIOD)/1000.0;
+    constexpr double twoPi = 2.0*M_PI;
 
     for(int i=0; i<dataPoints.size(); i++) {
-        double value = qSin((i*M_PI)/dataPoints.size() +
-                            2.0*M_PI*sineFrequency*sampleNumber*(
-                                (static_cast<double>(SAMPLE_GENERATION_PERIOD)/1000.0) )
-                            );
+        double phase = (i*M_PI)/dataPoints.size();
+        double value = qSin(phase + twoPi*freq*sampleNumber*samplePeriod);
         //qDebug() << sampleNumber << value;
-        QList<QPointF> data;
+        QVector<QPointF> data;
         data << QPointF(sampleNumber, value);
         dataPoints.at(i)->appendPoints(data);
     }

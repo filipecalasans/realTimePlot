@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QPointF>
 #include <QMutex>
+#include <QVector>
 
 class PointStream : public QObject
 {
@@ -13,9 +14,10 @@ public:
     static const int MAX_BUFFER_SIZE = 20000;
 
     explicit PointStream(QObject *parent = nullptr);
+    explicit PointStream(int maxSize, QObject *parent = nullptr);
 
-    void appendPoints(const QList<QPointF>&newPoints);
-    QList<QPointF> getRecentPoints(int numPoints);
+    void appendPoints(const QVector<QPointF>&newPoints);
+    QVector<QPointF> getRecentPoints(int numPoints);
 
     int getSamplesPerSeconds() const;
     void setSamplesPerSeconds(int value);
@@ -28,8 +30,9 @@ private:
 
     QMutex mutex;
     int samplesPerSeconds = 1; //1Hz
-    QList<QPointF> points;
-
+    QVector<QPointF> points;
+    int maxSize = MAX_BUFFER_SIZE;
+    quint32 padding;
 };
 
 #endif // POINTSTREAM_H

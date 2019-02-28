@@ -19,7 +19,7 @@ PlotArea::PlotArea(QWidget *parent) :
     wideAxisRect->axis(QCPAxis::atLeft)->setRange(-1.5, 1.5);
     plotLayout()->addElement(0, 0, wideAxisRect);
 
-    startTimer(PERIOD_OF_FRAMES);
+    startTimer(TIME_BETWEEN_FRAMES_MS);
 }
 
 PlotArea::~PlotArea()
@@ -63,19 +63,25 @@ void PlotArea::timerEvent(QTimerEvent *event)
 void PlotArea::update()
 {
     for(PointStream *stream : pointStream.keys()) {
-        QList<QPointF> data = stream->getRecentPoints(stream->getSamplesPerSeconds() * windowLengthInSeconds);
+        quint32 numPoints = stream->getSamplesPerSeconds() * windowLengthInSeconds;
+        QVector<QPointF> data = stream->getRecentPoints(static_cast<int>(numPoints));
         QCPDataMap *dataMap = new QCPDataMap();
-        quint32 windowNumberLastSample = ((quint32)data.last().x())/((quint32)(windowLengthInSeconds*stream->getSamplesPerSeconds()));
+        qreal lastX = data.last().x();
+        quint32 windowNumberLastSample = static_cast<quint32>(lastX)/numPoints;
         for(int i=data.size()-1; i>=0; i--) {
+            /*
+             * Fill the dataMap with the points that belong to the last window.
+             */
             const QPointF& point = data[i];
-            quint32 windowNumber = static_cast<quint32>(point.x())/
-                    (static_cast<quint32>(windowLengthInSeconds*stream->getSamplesPerSeconds()));
+
+            quint64 pointX = static_cast<quint32>(point.x());
+            quint32 windowNumber = pointX/numPoints;
             if(windowNumber != windowNumberLastSample) {
                 break;
             }
-            quint64 pointX = static_cast<quint32>(point.x());
-            double x = ((pointX)%((quint64)(windowLengthInSeconds*stream->getSamplesPerSeconds())))/((double)stream->getSamplesPerSeconds());
-            dataMap->insert(x, QCPData(x,point.y()));
+            double x = ((pointX)%(static_cast<quint64>(numPoints)))/
+                    static_cast<double>(stream->getSamplesPerSeconds());
+            dataMap->insert(x, QCPData(x, point.y()));
         }
         pointStream[stream]->setData(dataMap, false);
     }

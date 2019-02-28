@@ -16,9 +16,10 @@ class PlotArea : public QCustomPlot
 
 public:
 
-    static const int PERIOD_OF_FRAMES = 50; //100 ms - 20fps
+    static const int TIME_BETWEEN_FRAMES_MS = 50; //100 ms - 20fps
 
     explicit PlotArea(QWidget *parent = nullptr);
+
     ~PlotArea();
 
     void addPointStream (QSharedPointer<PointStream> points);
@@ -26,6 +27,7 @@ public:
     void update();
 
     double getWindowLengthInSeconds() const;
+
     void setWindowLengthInSeconds(double value);
 
     void timerEvent(QTimerEvent *event);

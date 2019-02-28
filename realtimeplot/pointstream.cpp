@@ -3,19 +3,25 @@
 #include <QDebug>
 #include <QMutexLocker>
 
-PointStream::PointStream(QObject *parent) : QObject(parent)
+PointStream::PointStream(QObject *parent) : QObject(parent),
+    maxSize(MAX_BUFFER_SIZE)
 {
-    points.reserve(MAX_BUFFER_SIZE*2);
+    points.reserve(maxSize*2);
 }
 
-QList<QPointF> PointStream::getRecentPoints(int numPoints)
+PointStream::PointStream(int maxSize, QObject *parent) : QObject(parent),
+    maxSize(maxSize)
 {
-    QList<QPointF> temp;
-    temp.reserve(numPoints);
+     points.reserve(maxSize*2);
+}
 
+QVector<QPointF> PointStream::getRecentPoints(int numPoints)
+{
+    QVector<QPointF> temp;
+    temp.reserve(numPoints);
     {
         QMutexLocker locker(&mutex);
-        int begin = points.count() - numPoints;
+        int begin = points.size() - numPoints;
         if(begin < 0) {
             begin = 0;
         }
@@ -39,11 +45,11 @@ void PointStream::setSamplesPerSeconds(int value)
     samplesPerSeconds = value;
 }
 
-void PointStream::appendPoints(const QList<QPointF> &newPoints)
+void PointStream::appendPoints(const QVector<QPointF> &newPoints)
 {
     QMutexLocker locker(&mutex);
-    if(points.size() + newPoints.size() > MAX_BUFFER_SIZE) {
-        discardPoints(MAX_BUFFER_SIZE - (points.size() + newPoints.size()));
+    if(points.size() + newPoints.size() > maxSize) {
+        discardPoints(maxSize - (points.size() + newPoints.size()));
     }
 
     points.append(newPoints);
@@ -54,7 +60,6 @@ void PointStream::discardPoints(int numPoints)
     QMutexLocker locker(&mutex);
     for(int i=0; i<numPoints; i++) {
 
-        /* Verification recommended in Qt docummentation */
         if(!points.isEmpty()) {
             points.takeFirst();
         }
