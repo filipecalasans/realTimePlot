@@ -44,17 +44,17 @@ FORMS    += mainwindow.ui \
 ### The UI element PlotArea 
 
 We have created the UI component *plortarea.ui* which can be added to your application using QDesigner. *PlotArea* is 
-a component that inherits the class QCustomPlot. PlotArea provides a Real Time Plot area similar to Oscilloscopes.
+a component that inherits the class QCustomPlot and provides a Real Time Plot area similar to Oscilloscopes.
 
-You might want to see QCustomPlot documentation to see wat features you have by default in the Plot. Fell free to customize or subclass PlotArea as needed.
+You might want to see QCustomPlot documentation to see what features you have by default in the Plot. Fell free to customize or subclass PlotArea as needed.
 
 ## Example
 
-This simple example instantiates a fixed number of curves backed each one for its own stream of points. The curves are all added to the same PlotArea as you can notice in the *MainWindow*'s constructor.
+This example instantiates a fixed number of curves each one backed for its own stream of points. The curves are all added to the same PlotArea as you can notice in the *MainWindow*'s constructor.
 
-Then we simulate a stream of points coming in real time in the **timerEvent** with periodicity of approximately **SAMPLE_GENERATION_PERIOD** ms.
+We simulate a stream of points coming in real time in the **timerEvent**, which runs at the periodicity of **SAMPLE_GENERATION_PERIOD** ms.
 
-You might want to check the file MainWindow.ui to see how we placed the **PlotAre** component to the MainWindow. However, if you need a more dynamic layout I would advise you to instantiate it programmatically,
+You might want to check the file MainWindow.ui to see how we placed the **PlotAre** component to the MainWindow. However, if you need a more dynamic layout you might want to instantiate it programmatically.
 
 ```c++
 #include "mainwindow.h"
