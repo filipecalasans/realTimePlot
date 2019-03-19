@@ -11,7 +11,7 @@ This project provides Qt/C++ primitives to ease building real time plot UI.
 # How to Use
 
 Place the folders *realtimeplot* and *QCustoPlot* inside your Qt project folder. The folder *realtimeplot* contains the primitives, while the folder *QCustomPlot* is the 3rd party library of same name.
-Notice, that you might need to add the folder *realtimeplot* to the **INCLUDEPATH**, otherwise you'll face errors generating the C++ code correspondent to the UI element *plot.ui*. 
+Notice that you might need to add the folder *realtimeplot* to the **INCLUDEPATH**, otherwise you'll face errors generating the C++ code correspondent to the UI element *plot.ui*. 
 
 ```make
 QT       += core gui printsupport
