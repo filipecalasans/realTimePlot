@@ -10,8 +10,8 @@ This project provides Qt/C++ primitives to ease building real time plot UI.
    
 # How to Use
 
-Place the folders *realtimeplot* and *QCustoPlot* inside your Qt project folder. The folder *realtimeplot* contains the primitives, while the folder *QCustomPlot* is the 3rd party library of same name.
-Notice that you might need to add the folder *realtimeplot* to the **INCLUDEPATH**, otherwise you'll face errors generating the C++ code correspondent to the UI element *plot.ui*. 
+Place the folders *realtimeplot* and *QCustoPlot* inside your Qt project folder. The folder *realtimeplot* contains the primitives, and the folder *QCustomPlot* is the 3rd party library of same name.
+You might need to add the folder *realtimeplot* to the **INCLUDEPATH**, otherwise you'll face errors generating *plot.ui* c++ class. 
 
 ```make
 QT       += core gui printsupport
@@ -41,20 +41,19 @@ FORMS    += mainwindow.ui \
 
 ```
 
-### The UI element PlotArea 
+### The UI element *PlotArea* 
 
-We have created the UI component *plortarea.ui* which can be added to your application using QDesigner. *PlotArea* is 
-a component that inherits the class QCustomPlot and provides a Real Time Plot area similar to Oscilloscopes.
+PlotArea* is an UI component that inherits the class *QCustomPlot* and provides Real Time Plot area similar to an Oscilloscope.
 
-You might want to see QCustomPlot documentation to see what features you have by default in the Plot. Fell free to customize or subclass PlotArea as needed.
+You might want to see QCustomPlot documentation to see what features it provides by default in the Plot. Fell free to customize or subclass *PlotArea* as needed.
 
 ## Example
 
-This example instantiates a fixed number of curves each one backed for its own stream of points. The curves are all added to the same PlotArea as you can notice in the *MainWindow*'s constructor.
+This example instantiates a fixed number of curves, each one backed for its own stream of points. The curves are added to the same *PlotArea* as you can notice in the *MainWindow*'s constructor.
 
-We simulate a stream of points coming in real time in the **timerEvent**, which runs at the periodicity of **SAMPLE_GENERATION_PERIOD** ms.
+We simulate a stream of points coming in real time in the **timerEvent** handler, which runs at the periodicity of **SAMPLE_GENERATION_PERIOD**.
 
-You might want to check the file MainWindow.ui to see how we placed the **PlotArea** component to the MainWindow. However, if you need a more dynamic layout you might want to instantiate it programmatically.
+You can check the file MainWindow.ui to see how we placed the **PlotArea** component to the MainWindow. However, if you need a more dynamic layout you may need to instantiate it programmatically.
 
 ```c++
 #include "mainwindow.h"
