@@ -11,7 +11,7 @@ This project provides Qt/C++ primitives to ease building real time plot UI.
 # How to Use
 
 Place the folders *realtimeplot* and *QCustoPlot* inside your Qt project folder. The folder *realtimeplot* contains the primitives, and the folder *QCustomPlot* is the 3rd party library of same name.
-You might need to add the folder *realtimeplot* to the **INCLUDEPATH**, otherwise you'll face errors generating *plot.ui* c++ class. 
+You might need to add the folder *realtimeplot* to the **INCLUDEPATH**, otherwise you'll face errors generating the *plot.ui* c++ class. 
 
 ```make
 QT       += core gui printsupport
@@ -43,15 +43,15 @@ FORMS    += mainwindow.ui \
 
 ### The UI element *PlotArea* 
 
-PlotArea* is an UI component that inherits the class *QCustomPlot* and provides Real Time Plot area similar to an Oscilloscope.
+*PlotArea* is an UI component that inherits the class *QCustomPlot* and provides Real Time Plot similar to an Oscilloscope.
 
-You might want to see QCustomPlot documentation to see what features it provides by default in the Plot. Fell free to customize or subclass *PlotArea* as needed.
+You might want to see the QCustomPlot documentation to see what features it provides by default. Fell free to customize or subclass *PlotArea* as needed.
 
 ## Example
 
-This example instantiates a fixed number of curves, each one backed for its own stream of points. The curves are added to the same *PlotArea* as you can notice in the *MainWindow*'s constructor.
+This example instantiates a fixed number of curves, each one backed by its own stream of points. The curves are added to the same *PlotArea* as you can notice in the *MainWindow*'s constructor.
 
-We simulate a stream of points coming in real time in the **timerEvent** handler, which runs at the periodicity of **SAMPLE_GENERATION_PERIOD**.
+We simulate a real-time stream of points in the **timerEvent** handler, which runs at the periodicity of **SAMPLE_GENERATION_PERIOD**.
 
 You can check the file MainWindow.ui to see how we placed the **PlotArea** component to the MainWindow. However, if you need a more dynamic layout you may need to instantiate it programmatically.
 
