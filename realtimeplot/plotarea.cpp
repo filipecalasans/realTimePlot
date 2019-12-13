@@ -63,9 +63,15 @@ void PlotArea::timerEvent(QTimerEvent *event)
 void PlotArea::update()
 {
     for(PointStream *stream : pointStream.keys()) {
-        quint32 numPoints = stream->getSamplesPerSeconds() * windowLengthInSeconds;
+        quint32 numPoints = static_cast<quint32>(
+                    stream->getSamplesPerSeconds() * windowLengthInSeconds);
         QVector<QPointF> data = stream->getRecentPoints(static_cast<int>(numPoints));
         QCPDataMap *dataMap = new QCPDataMap();
+
+        if(data.isEmpty()){
+            continue;
+        }
+
         qreal lastX = data.last().x();
         quint32 windowNumberLastSample = static_cast<quint32>(lastX)/numPoints;
         for(int i=data.size()-1; i>=0; i--) {

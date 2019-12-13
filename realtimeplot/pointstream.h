@@ -5,6 +5,7 @@
 #include <QPointF>
 #include <QMutex>
 #include <QVector>
+#include <QQueue>
 
 class PointStream : public QObject
 {
