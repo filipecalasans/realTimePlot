@@ -4,7 +4,7 @@ Real Time plot is a library based on QCustomPlot that provides Qt/C++ primitives
 
 # Dependencies
 
-* Qt >= 5.0
+* Qt >= 5.11
 * [QCustomPlot](http://www.qcustomplot.com/index.php/introduction) (included in this repo)
 * Gcc >= 6
 
@@ -106,7 +106,7 @@ This example instantiates a fixed number of curves, each one backed by its own s
 
 We simulate a real-time stream of points in the **timerEvent** handler, which runs at the periodicity of **SAMPLE_GENERATION_PERIOD**.
 
-You can check the file MainWindow.ui to see how we placed the **PlotArea** component to the MainWindow. However, if you need a more dynamic layout you may need to instantiate it programmatically.
+You can check the file MainWindow.ui to see how we placed the **PlotArea** component to the MainWindow. However, if you need a more dynamic layout I recomment you to instantiate it programmatically, so you can have full control over the layout.
 
 ```c++
 #include "mainwindow.h"
