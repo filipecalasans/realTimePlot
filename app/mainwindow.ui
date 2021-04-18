@@ -60,7 +60,7 @@
   <customwidget>
    <class>PlotArea</class>
    <extends>QWidget</extends>
-   <header location="global">plotarea.h</header>
+   <header location="global">realtimeplot/plotarea.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

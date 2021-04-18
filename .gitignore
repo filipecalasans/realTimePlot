@@ -1,10 +1,6 @@
 # C++ objects and libs
 
-*.slo
-*.lo
 *.o
-*.a
-*.la
 *.lai
 *.so
 *.dll
@@ -32,3 +28,4 @@ Makefile*
 #QtCtreator Qml
 *.qmlproject.user
 *.qmlproject.user.*
+*.pro.user

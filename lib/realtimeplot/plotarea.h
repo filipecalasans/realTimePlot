@@ -3,7 +3,8 @@
 
 #include <QWidget>
 #include <QSharedPointer>
-#include "QCustomPlot/qcustomplot.h"
+#include <qcustomplot/qcustomplot.h>
+
 #include "pointstream.h"
 
 namespace Ui {

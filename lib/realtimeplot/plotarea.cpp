@@ -29,7 +29,8 @@ PlotArea::~PlotArea()
 
 void PlotArea::addPointStream(QSharedPointer<PointStream> points)
 {
-    QCPGraph *graph = addGraph(axisRect(0)->axis(QCPAxis::atBottom), axisRect(0)->axis(QCPAxis::atLeft));
+    QCPGraph *graph = addGraph(axisRect(0)->axis(QCPAxis::atBottom),
+                               axisRect(0)->axis(QCPAxis::atLeft));
     QPen pen;
     pen.setColor(QColor(Qt::red));
     pen.setWidth(1);

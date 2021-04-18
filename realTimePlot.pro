@@ -13,18 +13,19 @@ TEMPLATE = app
 
 CONFIG += c++17
 
-INCLUDEPATH += realtimeplot
+INCLUDEPATH += lib/ \
+               third-party/
 
-SOURCES += main.cpp\
-        mainwindow.cpp \
-        QCustomPlot/qcustomplot.cpp \
-        realtimeplot/plotarea.cpp \
-        realtimeplot/pointstream.cpp
+SOURCES += app/main.cpp\
+        app/mainwindow.cpp \
+        third-party/qcustomplot/qcustomplot.cpp \
+        lib/realtimeplot/plotarea.cpp \
+        lib/realtimeplot/pointstream.cpp
 
-HEADERS  += mainwindow.h \
-            QCustomPlot/qcustomplot.h \
-            realtimeplot/plotarea.h \
-            realtimeplot/pointstream.h
+HEADERS  += app/mainwindow.h \
+            third-party/qcustomplot/qcustomplot.h \
+            lib/realtimeplot/plotarea.h \
+            lib/realtimeplot/pointstream.h
 
-FORMS    += mainwindow.ui \
-            realtimeplot/plotarea.ui
+FORMS    += app/mainwindow.ui \
+            lib/realtimeplot/plotarea.ui
