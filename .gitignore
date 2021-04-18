@@ -1,10 +1,15 @@
 # C++ objects and libs
 
+out/
+exported/
+
 *.o
 *.lai
 *.so
 *.dll
 *.dylib
+
+CMakeLists.txt.user
 
 # Qt-es
 
