@@ -1,17 +1,70 @@
 # Real Time Plot
 
-This project provides Qt/C++ primitives to ease building real time plot UI.
+Real Time plot is a library based on QCustomPlot that provides Qt/C++ primitives to ease building real time plot UI.
 
 # Dependencies
 
 * Qt >= 5.0
 * [QCustomPlot](http://www.qcustomplot.com/index.php/introduction) (included in this repo)
 * Gcc >= 6
-   
-# How to Use
 
-Place the folders *realtimeplot* and *QCustoPlot* inside your Qt project folder. The folder *realtimeplot* contains the primitives, and the folder *QCustomPlot* is the 3rd party library of same name.
-You might need to add the folder *realtimeplot* to the **INCLUDEPATH**, otherwise you'll face errors generating the *plot.ui* c++ class. 
+# How to Build
+
+The project supports `qmake` and `CMake` build systems. Both are supported by QtCreator, and can be used to build and debug.
+
+Usually, I recommend leveraging QtCreator when you have more than one Qt version installed in your system. QtCreator provides a nice interface to select the desired `toolchain` making sure `CMake` and `qmake` identify the correct Qt Version.
+
+# How to use this library on CMake based projects
+
+Currently, we export `realtimeplot.cmake`  and `qcustomplot.cmake` inside the folder `external`. Those two are generate when you run cmake for the first time, and can be imported from your top level CMake project. Also, you should link your binary to `realtimeplot`.
+
+Find a minimal example below that creates a `cmake` project for an application in a different directory ree.
+
+
+```cmake
+cmake_minimum_required(VERSION 3.1.0)
+project(real_time_plot VERSION 1.0.0 LANGUAGES C CXX)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTOUIC ON)
+
+include("../realTimePlot/exported/qcustomplot.cmake")
+include("../realTimePlot/exported/realtimeplot.cmake")
+
+find_package(Qt5 COMPONENTS Core REQUIRED)
+find_package(Qt5 COMPONENTS Widgets REQUIRED)
+find_package(Qt5PrintSupport REQUIRED)
+
+add_executable(test_import main.cpp)
+target_link_libraries(test_import realtimeplot)
+```
+
+This `CMakeLists.txt` builds a single `main.cpp` into `**test_import**` binary and links realtimeplot to it. In order to validate that we are able to use real time plot, `main.cpp` imports from the library as follow:
+
+
+```cpp
+#include <QDebug>
+#include <iostream>
+
+#include <realtimeplot/plotarea.h>
+
+int main(int argc, char** argv)
+{
+  Q_UNUSED(argc)
+  Q_UNUSED(argv)
+  qDebug() << "Testing...";
+  return 0;
+}
+```
+
+## How to use this library on qmake based projects
+
+In this case, you will need to place the source in your project so it can be compiled. You will need
+to include the folders `lib` and `third-party`, the former contains the realtimeplot library, and the latter contains `QCustomPlot`. Also make sure you update the variable `INCLUDEPATH`, so you can properly find the headers.
 
 ```make
 QT       += core gui printsupport
@@ -23,25 +76,25 @@ TEMPLATE = app
 
 CONFIG += c++17
 
-INCLUDEPATH += realtimeplot
+INCLUDEPATH += lib/ \
+               third-party/
 
-SOURCES += main.cpp\
-        mainwindow.cpp \
-        QCustomPlot/qcustomplot.cpp \ 
-        realtimeplot/plotarea.cpp \
-        realtimeplot/pointstream.cpp
+SOURCES += app/main.cpp\
+        app/mainwindow.cpp \
+        third-party/qcustomplot/qcustomplot.cpp \
+        lib/realtimeplot/plotarea.cpp \
+        lib/realtimeplot/pointstream.cpp
 
-HEADERS  += mainwindow.h \
-            QCustomPlot/qcustomplot.h \
-            realtimeplot/plotarea.h \
-            realtimeplot/pointstream.h
+HEADERS  += app/mainwindow.h \
+            third-party/qcustomplot/qcustomplot.h \
+            lib/realtimeplot/plotarea.h \
+            lib/realtimeplot/pointstream.h
 
-FORMS    += mainwindow.ui \
-            realtimeplot/plotarea.ui
-
+FORMS    += app/mainwindow.ui \
+            lib/realtimeplot/plotarea.ui
 ```
 
-### The UI element *PlotArea* 
+### The UI element *PlotArea*
 
 *PlotArea* is an UI component that inherits the class *QCustomPlot* and provides Real Time Plot similar to an Oscilloscope.
 
@@ -93,7 +146,7 @@ void MainWindow::timerEvent(QTimerEvent *event)
 
     constexpr double twoPi = 2.0*M_PI;
     constexpr double freq = 1.0; // 2Hz
-    const double samplePeriod = 
+    const double samplePeriod =
         static_cast<double>(SAMPLE_GENERATION_PERIOD)/1000.0;
 
     for(int i=0; i<dataPoints.size(); i++) {
