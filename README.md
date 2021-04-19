@@ -1,6 +1,6 @@
 # Real Time Plot
 
-Real Time plot is a library based on QCustomPlot that provides Qt/C++ primitives to ease building real time plot UI.
+Real Time plot is a library based on QCustomPlot which provides Qt/C++ primitives to ease building real time plot UI.
 
 # Dependencies
 
@@ -12,11 +12,11 @@ Real Time plot is a library based on QCustomPlot that provides Qt/C++ primitives
 
 The project supports `qmake` and `CMake` build systems. Both are supported by QtCreator, and can be used to build and debug.
 
-Usually, I recommend leveraging QtCreator when you have more than one Qt version installed in your system. QtCreator provides a nice interface to select the desired `toolchain` making sure `CMake` and `qmake` identify the correct Qt Version.
+We recommend leveraging QtCreator when you have more than one Qt version installed in your system. QtCreator provides a nice interface to select the desired `toolchain` making sure `CMake` and `qmake` identify the correct Qt Version.
 
 # How to use this library on CMake based projects
 
-Currently, we export `realtimeplot.cmake`  and `qcustomplot.cmake` inside the folder `external`. Those two are generate when you run cmake for the first time, and can be imported from your top level CMake project. Also, you should link your binary to `realtimeplot`.
+Currently, we export `realtimeplot.cmake`  and `qcustomplot.cmake` inside the folder `external`. They are generated when you run `cmake` for the first time, and can be imported from your top level CMake project. Also, you should link your binary to `realtimeplot`.
 
 Find a minimal example below that creates a `cmake` project for an application in a different directory ree.
 
