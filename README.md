@@ -14,12 +14,16 @@ The project supports `qmake` and `CMake` build systems. Both are supported by Qt
 
 We recommend leveraging QtCreator when you have more than one Qt version installed in your system. QtCreator provides a nice interface to select the desired `toolchain` making sure `CMake` and `qmake` identify the correct Qt Version.
 
+# How to Build macOS
+
+Use the script `build-macOs.sh` to build the project in macOS.
+
+
 # How to use this library on CMake based projects
 
 Currently, we export `realtimeplot.cmake`  and `qcustomplot.cmake` inside the folder `external`. They are generated when you run `cmake` for the first time, and can be imported from your top level CMake project. Also, you should link your binary to `realtimeplot`.
 
 Find a minimal example below that creates a `cmake` project for an application in a different directory ree.
-
 
 ```cmake
 cmake_minimum_required(VERSION 3.1.0)
