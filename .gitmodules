@@ -1,0 +1,3 @@
+[submodule "third-party/ringbuffer"]
+	path = third-party/ringbuffer
+	url = git@github.com:filipecalasans/ringbuffer.git
