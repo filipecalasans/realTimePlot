@@ -27,7 +27,7 @@ private:
     static const int SAMPLE_GENERATION_PERIOD = 5; // 5 ms
     quint64 sampleNumber = 0;
 
-    QList <QSharedPointer<PointStream> > dataPoints;
+    QList <QSharedPointer<PointStream<point_t>>> dataPoints;
 
     void timerEvent(QTimerEvent *event);
 };

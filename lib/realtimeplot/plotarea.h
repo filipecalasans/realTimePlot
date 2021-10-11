@@ -23,7 +23,7 @@ public:
 
     ~PlotArea();
 
-    void addPointStream (QSharedPointer<PointStream> points);
+    void addPointStream (QSharedPointer<PointStream<point_t>> points);
 
     void update();
 
@@ -36,8 +36,8 @@ public:
 private:
 
     Ui::PlotArea *ui;
-    QMap<PointStream *, QCPGraph *> pointStream;
-    QMap<PointStream *, QSharedPointer<PointStream> > references;
+    QMap<PointStream<point_t> *, QCPGraph *> pointStream;
+    QMap<PointStream<point_t> *, QSharedPointer<PointStream<point_t> > > references;
     double windowLengthInSeconds = 4.0;
 };
 

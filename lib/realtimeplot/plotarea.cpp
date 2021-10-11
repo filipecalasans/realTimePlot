@@ -27,7 +27,7 @@ PlotArea::~PlotArea()
     delete ui;
 }
 
-void PlotArea::addPointStream(QSharedPointer<PointStream> points)
+void PlotArea::addPointStream(QSharedPointer<PointStream<point_t>> points)
 {
     QCPGraph *graph = addGraph(axisRect(0)->axis(QCPAxis::atBottom),
                                axisRect(0)->axis(QCPAxis::atLeft));
@@ -63,32 +63,32 @@ void PlotArea::timerEvent(QTimerEvent *event)
 
 void PlotArea::update()
 {
-    for(PointStream *stream : pointStream.keys()) {
+    for(auto* stream : pointStream.keys()) {
         quint32 numPoints = static_cast<quint32>(
                     stream->getSamplesPerSeconds() * windowLengthInSeconds);
-        QVector<QPointF> data = stream->getRecentPoints(static_cast<int>(numPoints));
+        QVector<point_t> data = stream->getRecentPoints(numPoints);
         QCPDataMap *dataMap = new QCPDataMap();
 
         if(data.isEmpty()){
             continue;
         }
 
-        qreal lastX = data.last().x();
+        qreal lastX = data.last().x;
         quint32 windowNumberLastSample = static_cast<quint32>(lastX)/numPoints;
         for(int i=data.size()-1; i>=0; i--) {
             /*
              * Fill the dataMap with the points that belong to the last window.
              */
-            const QPointF& point = data[i];
+            const point_t& point = data[i];
 
-            quint64 pointX = static_cast<quint32>(point.x());
+            quint64 pointX = static_cast<quint32>(point.x);
             quint32 windowNumber = pointX/numPoints;
             if(windowNumber != windowNumberLastSample) {
                 break;
             }
             double x = ((pointX)%(static_cast<quint64>(numPoints)))/
                     static_cast<double>(stream->getSamplesPerSeconds());
-            dataMap->insert(x, QCPData(x, point.y()));
+            dataMap->insert(x, QCPData(x, point.y));
         }
         pointStream[stream]->setData(dataMap, false);
     }

@@ -13,7 +13,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     for(int i=0; i<POINT_STREAM_NUM; i++) {
-        QSharedPointer<PointStream> stream(new PointStream());
+        QSharedPointer<PointStream<point_t>> stream(new PointStream<point_t>());
         stream->setSamplesPerSeconds(1000/SAMPLE_GENERATION_PERIOD);
         dataPoints << stream;
         ui->plotArea->addPointStream(stream);
@@ -41,8 +41,13 @@ void MainWindow::timerEvent(QTimerEvent *event)
         double phase = (i*M_PI)/dataPoints.size();
         double value = qSin(phase + twoPi*freq*sampleNumber*samplePeriod);
         //qDebug() << sampleNumber << value;
-        QVector<QPointF> data;
-        data << QPointF(sampleNumber, value);
+        QVector<point_t> data;
+        point_t point = {
+            .x = static_cast<double>(sampleNumber),
+            .y = value,
+        };
+
+        data << point;
         dataPoints.at(i)->appendPoints(data);
     }
 

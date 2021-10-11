@@ -17,7 +17,7 @@ set(UI
 )
 
 add_library(realtimeplot ${SRC} ${UI})
-target_link_libraries(realtimeplot qcustomplot Qt5::Widgets)
+target_link_libraries(realtimeplot qcustomplot cpp_ringbuffer Qt5::Widgets)
 target_include_directories(realtimeplot PUBLIC "../")
 
 export(TARGETS realtimeplot FILE ${CMAKE_SOURCE_DIR}/exported/realtimeplot.cmake)
