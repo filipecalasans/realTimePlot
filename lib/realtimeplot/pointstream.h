@@ -24,9 +24,6 @@ public:
 
     static constexpr size_t DEFAULT_MAX_BUFFER_SIZE = (1 << 20);
 
-    // explicit PointStream();
-    // explicit PointStream(size_t maxSize);
-
     explicit PointStream() : 
         PointStream(DEFAULT_MAX_BUFFER_SIZE)
     {
@@ -44,10 +41,6 @@ public:
             QCoreApplication::exit(1);
         }
     }
-
-
-    // int getSamplesPerSeconds() const;
-    // void setSamplesPerSeconds(int value);
 
     int getSamplesPerSeconds() const
     {
@@ -69,7 +62,6 @@ public:
             temp.resize(std::min(numPoints, buffer->length()));
             buffer->peekMultiple(reinterpret_cast<uint8_t*>(temp.data()), temp.size() * sizeof(T));
         }
-
         return temp;
     }
 
@@ -79,7 +71,7 @@ public:
         buffer->appendMultiple(reinterpret_cast<const uint8_t*>(newPoints.data()), sizeof(point_t) * newPoints.size());
     }
 
-    void discardPoints(int numPoints)
+    void discardPoints(size_t numPoints)
     {
         QMutexLocker locker(&mutex);
         buffer->discardMultiple(sizeof(T) * numPoints);

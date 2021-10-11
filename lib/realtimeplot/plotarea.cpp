@@ -64,9 +64,11 @@ void PlotArea::timerEvent(QTimerEvent *event)
 void PlotArea::update()
 {
     for(auto* stream : pointStream.keys()) {
-        quint32 numPoints = static_cast<quint32>(
+        size_t numPointsPerWindows = static_cast<quint32>(
                     stream->getSamplesPerSeconds() * windowLengthInSeconds);
-        QVector<point_t> data = stream->getRecentPoints(numPoints);
+
+        // Read exhibition window.
+        QVector<point_t> data = stream->getRecentPoints(numPointsPerWindows);
         QCPDataMap *dataMap = new QCPDataMap();
 
         if(data.isEmpty()){
@@ -74,27 +76,30 @@ void PlotArea::update()
         }
 
         qreal lastX = data.last().x;
-        quint32 windowNumberLastSample = static_cast<quint32>(lastX)/numPoints;
+        quint32 windowNumberLastSample = static_cast<quint32>(lastX)/numPointsPerWindows;
+
+        /* TODO: Resample the point stream to adjust to the widget resolution */
         for(int i=data.size()-1; i>=0; i--) {
             /*
-             * Fill the dataMap with the points that belong to the last window.
+             * Read
              */
             const point_t& point = data[i];
+            quint64 pointX = static_cast<quint64>(point.x);
+            quint32 windowNumber = pointX/numPointsPerWindows;
 
-            quint64 pointX = static_cast<quint32>(point.x);
-            quint32 windowNumber = pointX/numPoints;
-            if(windowNumber != windowNumberLastSample) {
-                break;
-            }
-            double x = ((pointX)%(static_cast<quint64>(numPoints)))/
+            double x = ((pointX)%(static_cast<quint64>(numPointsPerWindows)))/
                     static_cast<double>(stream->getSamplesPerSeconds());
             dataMap->insert(x, QCPData(x, point.y));
         }
         pointStream[stream]->setData(dataMap, false);
+
+        // Discard points from the exhibition window if the windows has filled up.
+        if (stream->getStreamSize() >= numPointsPerWindows) {
+            stream->discardPoints(numPointsPerWindows);
+        }
     }
 
     //axisRect()->axis(QCPAxis::atLeft)->rescale(true);
-
     replot();
 }
 
