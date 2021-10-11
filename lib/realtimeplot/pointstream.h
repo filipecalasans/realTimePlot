@@ -33,8 +33,6 @@ public:
     explicit PointStream(size_t maxSize) :
         maxSize(maxSize)
     {
-        // points.reserve(maxSize*2);
-
         buffer = std::make_unique<RingBufferWrapper>(maxSize);
         if (!buffer->isValid()) {
             qDebug() << "Error: Couldn't initialize the ring buffer.";
@@ -51,7 +49,6 @@ public:
     {
         samplesPerSeconds = value;
     }
-
 
     QVector<T> getRecentPoints(size_t numPoints)
     {
@@ -77,15 +74,16 @@ public:
         buffer->discardMultiple(sizeof(T) * numPoints);
     }
 
-    size_t getStreamSize() const { return buffer->numElements<T>(); }
+    size_t getStreamSize() const 
+    { 
+        return buffer->numElements<T>(); 
+    }
 
 private:
 
     QMutex mutex;
     int samplesPerSeconds = 1; //1Hz
     size_t maxSize = DEFAULT_MAX_BUFFER_SIZE;
-    quint32 padding;
-
     std::unique_ptr<RingBufferWrapper> buffer;
 };
 
