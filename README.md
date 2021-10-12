@@ -71,6 +71,12 @@ In this case, you will need to place the source in your project so it can be com
 to include the folders `lib` and `third-party`, the former contains the realtimeplot library, and the latter contains `QCustomPlot`. Also make sure you update the variable `INCLUDEPATH`, so you can properly find the headers.
 
 ```make
+#-------------------------------------------------
+#
+# Project created by QtCreator 2015-11-07T00:48:35
+#
+#-------------------------------------------------
+
 QT       += core gui printsupport
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -81,16 +87,21 @@ TEMPLATE = app
 CONFIG += c++17
 
 INCLUDEPATH += lib/ \
-               third-party/
+               third-party/ \
+               third-party/ringbuffer/src/ \
 
 SOURCES += app/main.cpp\
         app/mainwindow.cpp \
         third-party/qcustomplot/qcustomplot.cpp \
+        third-party/ringbuffer/src/ringbuffer/c/ringbuffer.c \
+        third-party/ringbuffer/src/ringbuffer/cpp/ringbufferwrapper.cpp \
         lib/realtimeplot/plotarea.cpp \
         lib/realtimeplot/pointstream.cpp
 
 HEADERS  += app/mainwindow.h \
             third-party/qcustomplot/qcustomplot.h \
+            third-party/ringbuffer/src/ringbuffer/c/ringbuffer.h \
+            third-party/ringbuffer/src/ringbuffer/cpp/ringbufferwrapper.h \
             lib/realtimeplot/plotarea.h \
             lib/realtimeplot/pointstream.h
 
