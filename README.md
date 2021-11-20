@@ -18,6 +18,17 @@ We recommend leveraging QtCreator when you have more than one Qt version install
 
 Use the script `build-macOs.sh` to build the project in macOS.
 
+```bash
+# Install Qt5 using brew.
+$ brew install qt5
+
+# Build macOS
+./build-macOs.sh
+
+# Run the app example
+./out/app/plot
+```
+
 
 # How to use this library on CMake based projects
 
