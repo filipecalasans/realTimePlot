@@ -5,14 +5,17 @@ enable_testing()
 set(SRC
   "main.cpp"
   "mainwindow.cpp"
+  "ui/signalsourceselectdialog.cpp"
 )
 
 set(HEADERS
   "mainwindow.h.h"
-)
+  "ui/signalsourceselectdialog.h"
+  )
 
 set(UI
   "mainwindow.ui"
+  "ui/signalsourceselectdialog.ui"
 )
 
 add_executable(plot ${SRC} ${UI})

@@ -2,7 +2,11 @@
 #include "ui_mainwindow.h"
 
 #include <QDebug>
+#include <QDialog>
+#include <QPushButton>
 #include <qmath.h>
+
+#include "ui/signalsourceselectdialog.h"
 
 #define POINT_STREAM_NUM 4
 
@@ -22,6 +26,14 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->plotArea->setWindowLengthInSeconds(4.0);
 
     startTimer(SAMPLE_GENERATION_PERIOD);
+
+   connect(ui->addSignalPushButton, &QPushButton::clicked, this, [=](bool clicked){
+        SignalSourceSelectDialog dialog;
+        auto ret = dialog.exec();
+        if (ret == QDialog::Accepted) {
+            qDebug() << "Dialog Accepted";
+        }
+    });
 }
 
 MainWindow::~MainWindow()
