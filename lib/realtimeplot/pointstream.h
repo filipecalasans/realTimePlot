@@ -54,9 +54,10 @@ public:
     {
         QVector<T> temp;
         temp.reserve(numPoints);
-        {
+        {   
+            size_t bufferNumElements = buffer->numElements<T>();
             QMutexLocker locker(&mutex);
-            temp.resize(std::min(numPoints, buffer->length()));
+            temp.resize(std::min(numPoints, bufferNumElements));
             buffer->peekMultiple(reinterpret_cast<uint8_t*>(temp.data()), temp.size() * sizeof(T));
         }
         return temp;
