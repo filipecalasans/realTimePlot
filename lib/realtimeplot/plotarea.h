@@ -5,7 +5,7 @@
 #include <QSharedPointer>
 #include <qcustomplot/qcustomplot.h>
 
-#include "pointstream.h"
+#include "signal/pointstream.h"
 
 namespace Ui {
 class PlotArea;

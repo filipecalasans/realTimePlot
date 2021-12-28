@@ -63,7 +63,7 @@ void PlotArea::timerEvent(QTimerEvent *event)
 
 void PlotArea::update()
 {
-    for(auto* stream : pointStream.keys()) {
+    for(auto stream : pointStream.keys()) {
         size_t numPointsPerWindows = static_cast<quint32>(
                     stream->getSamplesPerSeconds() * windowLengthInSeconds);
 
@@ -75,9 +75,6 @@ void PlotArea::update()
             continue;
         }
 
-        qreal lastX = data.last().x;
-        quint32 windowNumberLastSample = static_cast<quint32>(lastX)/numPointsPerWindows;
-
         /* TODO: Resample the point stream to adjust to the widget resolution */
         for(int i=data.size()-1; i>=0; i--) {
             /*
@@ -85,8 +82,6 @@ void PlotArea::update()
              */
             const point_t& point = data[i];
             quint64 pointX = static_cast<quint64>(point.x);
-            quint32 windowNumber = pointX/numPointsPerWindows;
-
             double x = ((pointX)%(static_cast<quint64>(numPointsPerWindows)))/
                     static_cast<double>(stream->getSamplesPerSeconds());
             dataMap->insert(x, QCPData(x, point.y));

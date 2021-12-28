@@ -6,7 +6,7 @@
 #include <QSharedPointer>
 
 #include <realtimeplot/plotarea.h>
-#include <realtimeplot/pointstream.h>
+#include <signal/pointstream.h>
 
 namespace Ui {
 class MainWindow;
