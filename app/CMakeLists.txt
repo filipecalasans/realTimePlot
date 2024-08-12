@@ -8,14 +8,14 @@ set(SRC
 )
 
 set(HEADERS
-  "mainwindow.h.h"
+  "mainwindow.h"
 )
 
 set(UI
   "mainwindow.ui"
 )
 
-add_executable(plot ${SRC} ${UI})
+add_executable(plot ${SRC} ${UI} ${HEADERS})
 target_link_libraries(plot realtimeplot Qt5::Widgets Qt5::Core)
 
 #export(TARGETS realtimeplot FILE ${CMAKE_SOURCE_DIR}/external/realtimeplot.cmake)

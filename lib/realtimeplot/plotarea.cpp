@@ -1,10 +1,12 @@
 #include "plotarea.h"
 #include "ui_plotarea.h"
 
+#include <chrono>
 #include <qmath.h>
 
 PlotArea::PlotArea(QWidget *parent) :
     QCustomPlot(parent),
+    timerId(0),
     ui(new Ui::PlotArea)
 {
     ui->setupUi(this);
@@ -18,8 +20,6 @@ PlotArea::PlotArea(QWidget *parent) :
     wideAxisRect->removeAxis(wideAxisRect->axis(QCPAxis::atTop));
     wideAxisRect->axis(QCPAxis::atLeft)->setRange(-1.5, 1.5);
     plotLayout()->addElement(0, 0, wideAxisRect);
-
-    startTimer(TIME_BETWEEN_FRAMES_MS);
 }
 
 PlotArea::~PlotArea()
@@ -59,6 +59,25 @@ void PlotArea::timerEvent(QTimerEvent *event)
 {
     Q_UNUSED(event)
     update();
+}
+
+bool PlotArea::start(std::chrono::milliseconds refresh_ms) {
+    if (timerId != 0) {
+        return false;
+    }
+    timerId = startTimer(std::chrono::milliseconds(20));
+    return timerId != 0;
+}
+
+void PlotArea::stop() {
+    if (timerId != 0) {
+        killTimer(timerId);
+        timerId = 0;
+    }
+}
+
+PlotArea::State PlotArea::getState() {
+    return timerId == 0 ? State::Stopped : State::Running;
 }
 
 void PlotArea::update()
