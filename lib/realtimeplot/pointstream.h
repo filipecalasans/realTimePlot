@@ -75,6 +75,11 @@ public:
         buffer->discardMultiple(sizeof(T) * numPoints);
     }
 
+    void flush() {
+        QMutexLocker locker(&mutex);
+        buffer->clean();
+    }
+
     size_t getStreamSize() const 
     { 
         return buffer->numElements<T>(); 
