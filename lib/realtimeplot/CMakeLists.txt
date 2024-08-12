@@ -16,7 +16,7 @@ set(UI
   "plotarea.ui"
 )
 
-add_library(realtimeplot ${SRC} ${UI})
+add_library(realtimeplot ${HEADERS} ${SRC} ${UI})
 target_link_libraries(realtimeplot qcustomplot cpp_ringbuffer Qt5::Widgets)
 target_include_directories(realtimeplot PUBLIC "../")
 

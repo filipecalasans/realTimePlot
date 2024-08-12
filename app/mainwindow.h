@@ -16,6 +16,7 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
+
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
@@ -24,8 +25,9 @@ public:
 private:
     Ui::MainWindow *ui;
 
-    static const int SAMPLE_GENERATION_PERIOD = 5; // 5 ms
+    static constexpr int SAMPLE_GENERATION_PERIOD = 5; // 5 ms
     quint64 sampleNumber = 0;
+    int dataGenerationTimer = 0;
 
     QList <QSharedPointer<PointStream<point_t>>> dataPoints;
 
