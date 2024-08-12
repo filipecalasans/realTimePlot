@@ -65,7 +65,7 @@ bool PlotArea::start(std::chrono::milliseconds refresh_ms) {
     if (timerId != 0) {
         return false;
     }
-    timerId = startTimer(std::chrono::milliseconds(20));
+    timerId = startTimer(std::chrono::milliseconds(refresh_ms));
     return timerId != 0;
 }
 

@@ -29,11 +29,9 @@ public:
        Stopped = 0,
        Running = 1,
     };
-
-    static constexpr std::chrono::milliseconds TIME_BETWEEN_FRAMES_MS{1000 / 3}; // 30 fps
+    static constexpr std::chrono::milliseconds TIME_BETWEEN_FRAMES_MS{1000 / 60}; // 60 fps
 
     explicit PlotArea(QWidget *parent = nullptr);
-
     ~PlotArea();
 
     void addPointStream (QSharedPointer<PointStream<point_t>> points);

@@ -20,8 +20,10 @@ MainWindow::MainWindow(QWidget *parent) :
         ui->plotArea->addPointStream(stream);
     }
 
-    ui->playPauseButton->setText("Play");
     ui->plotArea->setWindowLengthInSeconds(4.0);
+    // Start on Running State so we can see something on the screen.
+    ui->playPauseButton->setText(QPushButton::tr("Pause"));
+    Q_ASSERT(ui->plotArea->start());
 
     connect(ui->playPauseButton, &QPushButton::released, this, [=]() {
         qDebug() << "Play/Pause Clicked";
