@@ -20,7 +20,11 @@ MainWindow::MainWindow(QWidget *parent) :
         ui->plotArea->addPointStream(stream);
     }
 
-    ui->plotArea->setWindowLengthInSeconds(4.0);
+    ui->windowLengthSpinBox->setMinimum(1);
+    ui->windowLengthSpinBox->setMaximum(60);
+    ui->windowLengthSpinBox->setValue(4);
+    ui->plotArea->setWindowLengthInSeconds(ui->windowLengthSpinBox->value() * 1.0f);
+
     // Start on Running State so we can see something on the screen.
     ui->playPauseButton->setText(QPushButton::tr("Pause"));
     Q_ASSERT(ui->plotArea->start());
@@ -35,6 +39,10 @@ MainWindow::MainWindow(QWidget *parent) :
             Q_ASSERT(ui->plotArea->start());
             ui->playPauseButton->setText(QPushButton::tr("Pause"));
         }
+    });
+
+    connect(ui->windowLengthSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), [=](int value) {
+        ui->plotArea->setWindowLengthInSeconds(value * 1.0f);
     });
 
     dataGenerationTimer = startTimer(SAMPLE_GENERATION_PERIOD);
