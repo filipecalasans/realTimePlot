@@ -1,4 +1,4 @@
-#ifndef PLOTAREA_H
+    #ifndef PLOTAREA_H
 #define PLOTAREA_H
 
 #include <chrono>
@@ -31,6 +31,7 @@ public:
     };
     static constexpr std::chrono::milliseconds TIME_BETWEEN_FRAMES_MS{1000 / 60}; // 60 fps
 
+
     explicit PlotArea(QWidget *parent = nullptr);
     ~PlotArea();
 
@@ -50,14 +51,22 @@ public:
 protected:
 
     void timerEvent(QTimerEvent *event);
+    /// After window lenght change plot window should be clean and recalculated.
+    void setPlotWindowCleaning();
+    void handlePlotWindowCleaning();
 
 private:
-
     Ui::PlotArea *ui;
     QMap<PointStream<point_t>*, QCPGraph *> pointStream;
     QMap<PointStream<point_t>*, QSharedPointer<PointStream<point_t>>> references;
     int timerId;
     double windowLengthInSeconds = 4.0;
+
+    struct CleaningState {
+        bool deferred = false;
+        bool pending = false;
+    } cleaningState;
+
 };
 
 #endif // PLOTAREA_H

@@ -51,14 +51,44 @@ double PlotArea::getWindowLengthInSeconds() const
 
 void PlotArea::setWindowLengthInSeconds(double value)
 {
+    const bool shortening = value < windowLengthInSeconds;
     windowLengthInSeconds = value;
     axisRect()->axis(QCPAxis::atBottom)->setRange(0, windowLengthInSeconds);
+    if (shortening) {
+        setPlotWindowCleaning();
+    }
 }
 
 void PlotArea::timerEvent(QTimerEvent *event)
 {
     Q_UNUSED(event)
     update();
+}
+
+void PlotArea::setPlotWindowCleaning() {
+    if (getState() == State::Stopped) {
+        cleaningState.deferred = true;
+        return;
+    }
+    cleaningState.pending = true;
+}
+
+void PlotArea::handlePlotWindowCleaning() {
+    bool clean = false;
+    if (cleaningState.pending) {
+        Q_ASSERT(getState() == State::Running);
+        clean = true;
+        cleaningState.pending = false;
+    }
+    if (cleaningState.deferred && getState() == State::Running) {
+        clean = true;
+        cleaningState.deferred = false;
+    // Do the cleaning if conditions are satisfied.
+    if (clean) {
+        for (auto& stream : pointStream.keys()) {
+            stream->flush();
+        }
+    }
 }
 
 bool PlotArea::start(std::chrono::milliseconds refresh_ms) {
@@ -82,20 +112,27 @@ PlotArea::State PlotArea::getState() {
 
 void PlotArea::update()
 {
+    handlePlotWindowCleaning();
+
+
     for(auto* stream : pointStream.keys()) {
-        size_t numPointsPerWindows = static_cast<quint32>(
+        size_t numPointsPerWindow = static_cast<quint32>(
                     stream->getSamplesPerSeconds() * windowLengthInSeconds);
 
-        // Read exhibition window.
-        QVector<point_t> data = stream->getRecentPoints(numPointsPerWindows);
-        QCPDataMap *dataMap = new QCPDataMap();
+        const auto streamSize = stream->getStreamSize();
+        if (streamSize >= numPointsPerWindow) {
+            stream->discardPoints(streamSize - streamSize % numPointsPerWindow);
+        }
 
+        // Read exhibition window.
+        QVector<point_t> data = stream->getRecentPoints(numPointsPerWindow);
         if(data.isEmpty()){
             continue;
         }
 
+        QCPDataMap *dataMap = new QCPDataMap();
         qreal lastX = data.last().x;
-        quint32 windowNumberLastSample = static_cast<quint32>(lastX)/numPointsPerWindows;
+        quint32 windowNumberLastSample = static_cast<quint32>(lastX) / numPointsPerWindow;
 
         /* TODO: Resample the point stream to adjust to the widget resolution */
         for(int i=data.size()-1; i>=0; i--) {
@@ -103,22 +140,11 @@ void PlotArea::update()
              * Read
              */
             const point_t& point = data[i];
-            quint64 pointX = static_cast<quint64>(point.x);
-            quint32 windowNumber = pointX/numPointsPerWindows;
-
-            double x = ((pointX)%(static_cast<quint64>(numPointsPerWindows)))/
-                    static_cast<double>(stream->getSamplesPerSeconds());
+            const double x = static_cast<double>(windowLengthInSeconds * i) / static_cast<double>(numPointsPerWindow);
             dataMap->insert(x, QCPData(x, point.y));
         }
         pointStream[stream]->setData(dataMap, false);
-
-        // Discard points from the exhibition window if the windows has filled up.
-        if (stream->getStreamSize() >= numPointsPerWindows) {
-            stream->discardPoints(numPointsPerWindows);
-        }
     }
-
-    //axisRect()->axis(QCPAxis::atLeft)->rescale(true);
     replot();
 }
 
