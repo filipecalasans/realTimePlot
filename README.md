@@ -2,6 +2,14 @@
 
 Real Time plot is a library based on QCustomPlot which provides Qt/C++ primitives to ease building real time plot UI.
 
+# Features
+
+* Dynamic Window-length.
+* Multi-plot lines in the same graph area.
+* Dynamic Refresh rate.
+* Play/Pause presentation.
+* Defines custom Qt UI element that can be used in the QtCreator editor for static layouts.
+
 # Dependencies
 
 * Qt >= 5.11
@@ -14,7 +22,24 @@ The project supports `qmake` and `CMake` build systems. Both are supported by Qt
 
 We recommend leveraging QtCreator when you have more than one Qt version installed in your system. QtCreator provides a nice interface to select the desired `toolchain` making sure `CMake` and `qmake` identify the correct Qt Version.
 
-# How to Build macOS
+# How to Build Nix OSes
+
+Use the script `build.sh` to build the project in Linux/MacOS. The script accepts passing
+the QT5_DIR env variable where you can specify any custom Qt5 installation path.
+
+```bash
+# Build
+./build.sh
+
+# Or build with custom QT installation path
+QT5_DIR=$HOME/my/qt ./build.sh
+
+# Run the app example
+./run-sample.sh
+```
+
+
+# How to Build macOS (Brew)
 
 Use the script `build-macOs.sh` to build the project in macOS.
 
@@ -26,15 +51,17 @@ $ brew install qt5
 ./build-macOs.sh
 
 # Run the app example
-./out/app/plot
+./run-sample.sh
 ```
 
 
 # How to use this library on CMake based projects
 
-Currently, we export `realtimeplot.cmake`  and `qcustomplot.cmake` inside the folder `external`. They are generated when you run `cmake` for the first time, and can be imported from your top level CMake project. Also, you should link your binary to `realtimeplot`.
+Currently, we export `realtimeplot.cmake`  and `qcustomplot.cmake` inside the folder `external`. They are generated when you run `cmake` for the first time, which can be imported from your top level CMake project. 
 
-Find a minimal example below that creates a `cmake` project for an application in a different directory ree.
+NOTE: Please link your application binary to `realtimeplot`.
+
+Find a minimal example below that creates a `cmake` project for an application in a different directory tree.
 
 ```cmake
 cmake_minimum_required(VERSION 3.1.0)
@@ -58,7 +85,7 @@ add_executable(test_import main.cpp)
 target_link_libraries(test_import realtimeplot)
 ```
 
-This `CMakeLists.txt` builds a single `main.cpp` into `**test_import**` binary and links realtimeplot to it. In order to validate that we are able to use real time plot, `main.cpp` imports from the library as follow:
+This `CMakeLists.txt` builds a single `main.cpp` into `**test_import**` binary and links to realtimeplot. In order to validate that we are able to use real time plot, `main.cpp` imports from the library as follow:
 
 
 ```cpp
@@ -124,7 +151,7 @@ FORMS    += app/mainwindow.ui \
 
 *PlotArea* is an UI component that inherits the class *QCustomPlot* and provides Real Time Plot similar to an Oscilloscope.
 
-You might want to see the QCustomPlot documentation to see what features it provides by default. Fell free to customize or subclass *PlotArea* as needed.
+You might want to see the QCustomPlot documentation to see what features it provides by default. Feel free to customize or subclass *PlotArea* as needed.
 
 ## Example
 
@@ -191,6 +218,3 @@ void MainWindow::timerEvent(QTimerEvent *event)
 
 ![](example.gif)
 
-## TODO
-
-* Implement GraphFactory to handle CGraph Style
