@@ -83,6 +83,7 @@ void PlotArea::handlePlotWindowCleaning() {
     if (cleaningState.deferred && getState() == State::Running) {
         clean = true;
         cleaningState.deferred = false;
+    }
     // Do the cleaning if conditions are satisfied.
     if (clean) {
         for (auto& stream : pointStream.keys()) {
