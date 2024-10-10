@@ -35,3 +35,6 @@ Makefile*
 *.qmlproject.user
 *.qmlproject.user.*
 *.pro.user
+
+# Vim
+*.swp
