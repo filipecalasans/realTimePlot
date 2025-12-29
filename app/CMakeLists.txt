@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.16)
 project(plot_app C CXX)
 enable_testing()
 
@@ -16,6 +16,6 @@ set(UI
 )
 
 add_executable(plot ${SRC} ${UI} ${HEADERS})
-target_link_libraries(plot realtimeplot Qt5::Widgets Qt5::Core)
+target_link_libraries(plot realtimeplot Qt6::Widgets Qt6::Core)
 
 #export(TARGETS realtimeplot FILE ${CMAKE_SOURCE_DIR}/external/realtimeplot.cmake)

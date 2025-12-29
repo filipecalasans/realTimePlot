@@ -8,11 +8,11 @@ CMAKE_ARGS=(
   -DCMAKE_BUILD_TYPE=Debug
 )
 
-if [ "$QT5_DIR" == "" ]
+if [ "$QT6_DIR" == "" ]
 then
-  echo "\$QT5_DIR env variable not provided. Using system-wide path."
+  echo "\$QT6_DIR env variable not provided. Using system-wide path."
 else
- CMAKE_ARGS+=(-DCMAKE_PREFIX_PATH="${QT5_DIR}")
+ CMAKE_ARGS+=(-DCMAKE_PREFIX_PATH="${QT6_DIR}")
 fi
 
 (cd "$SCRIPT_DIR/out" && cmake ../ ${CMAKE_ARGS[@]}  && make)

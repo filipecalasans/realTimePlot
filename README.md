@@ -12,7 +12,8 @@ Real Time plot is a library based on QCustomPlot which provides Qt/C++ primitive
 
 # Dependencies
 
-* Qt >= 5.11
+* Qt >= 6.0
+* CMake >= 3.16
 * [QCustomPlot](http://www.qcustomplot.com/index.php/introduction) (included in this repo)
 * Gcc >= 6
 
@@ -25,14 +26,14 @@ We recommend leveraging QtCreator when you have more than one Qt version install
 # How to Build Nix OSes
 
 Use the script `build.sh` to build the project in Linux/MacOS. The script accepts passing
-the QT5_DIR env variable where you can specify any custom Qt5 installation path.
+the QT6_DIR env variable where you can specify any custom Qt6 installation path.
 
 ```bash
 # Build
 ./build.sh
 
 # Or build with custom QT installation path
-QT5_DIR=$HOME/my/qt ./build.sh
+QT6_DIR=$HOME/my/qt6 ./build.sh
 
 # Run the app example
 ./run-sample.sh
@@ -44,8 +45,8 @@ QT5_DIR=$HOME/my/qt ./build.sh
 Use the script `build-macOs.sh` to build the project in macOS.
 
 ```bash
-# Install Qt5 using brew.
-$ brew install qt5
+# Install Qt6 using brew.
+$ brew install qt6
 
 # Build macOS
 ./build-macOs.sh
@@ -64,7 +65,7 @@ NOTE: Please link your application binary to `realtimeplot`.
 Find a minimal example below that creates a `cmake` project for an application in a different directory tree.
 
 ```cmake
-cmake_minimum_required(VERSION 3.1.0)
+cmake_minimum_required(VERSION 3.16)
 project(real_time_plot VERSION 1.0.0 LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -77,9 +78,9 @@ set(CMAKE_AUTOUIC ON)
 include("../realTimePlot/exported/qcustomplot.cmake")
 include("../realTimePlot/exported/realtimeplot.cmake")
 
-find_package(Qt5 COMPONENTS Core REQUIRED)
-find_package(Qt5 COMPONENTS Widgets REQUIRED)
-find_package(Qt5PrintSupport REQUIRED)
+find_package(Qt6 COMPONENTS Core REQUIRED)
+find_package(Qt6 COMPONENTS Widgets REQUIRED)
+find_package(Qt6 COMPONENTS PrintSupport REQUIRED)
 
 add_executable(test_import main.cpp)
 target_link_libraries(test_import realtimeplot)

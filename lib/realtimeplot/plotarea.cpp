@@ -131,7 +131,11 @@ void PlotArea::update()
             continue;
         }
 
-        QCPDataMap *dataMap = new QCPDataMap();
+        QVector<double> keys;
+        QVector<double> values;
+        keys.reserve(data.size());
+        values.reserve(data.size());
+
         qreal lastX = data.last().x;
         quint32 windowNumberLastSample = static_cast<quint32>(lastX) / numPointsPerWindow;
 
@@ -142,9 +146,10 @@ void PlotArea::update()
              */
             const point_t& point = data[i];
             const double x = static_cast<double>(windowLengthInSeconds * i) / static_cast<double>(numPointsPerWindow);
-            dataMap->insert(x, QCPData(x, point.y));
+            keys.append(x);
+            values.append(point.y);
         }
-        pointStream[stream]->setData(dataMap, false);
+        pointStream[stream]->setData(keys, values, false);
     }
     replot();
 }

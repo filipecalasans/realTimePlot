@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.16)
 project(realtimeplot C CXX)
 enable_testing()
 
@@ -17,7 +17,7 @@ set(UI
 )
 
 add_library(realtimeplot ${HEADERS} ${SRC} ${UI})
-target_link_libraries(realtimeplot qcustomplot cpp_ringbuffer Qt5::Widgets)
+target_link_libraries(realtimeplot qcustomplot cpp_ringbuffer Qt6::Widgets)
 target_include_directories(realtimeplot PUBLIC "../")
 
 export(TARGETS realtimeplot FILE ${CMAKE_SOURCE_DIR}/exported/realtimeplot.cmake)
