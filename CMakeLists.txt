@@ -19,4 +19,4 @@ find_package(Qt6 COMPONENTS Widgets REQUIRED)
 
 add_subdirectory(third-party)
 add_subdirectory(lib)
-add_subdirectory(app)
+add_subdirectory(sample)

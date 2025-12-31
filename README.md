@@ -129,15 +129,15 @@ INCLUDEPATH += lib/ \
                third-party/ \
                third-party/ringbuffer/src/ \
 
-SOURCES += app/main.cpp\
-        app/mainwindow.cpp \
+SOURCES += sample/main.cpp\
+        sample/mainwindow.cpp \
         third-party/qcustomplot/qcustomplot.cpp \
         third-party/ringbuffer/src/ringbuffer/c/ringbuffer.c \
         third-party/ringbuffer/src/ringbuffer/cpp/ringbufferwrapper.cpp \
         lib/realtimeplot/plotarea.cpp \
         lib/realtimeplot/pointstream.cpp
 
-HEADERS  += app/mainwindow.h \
+HEADERS  += sample/mainwindow.h \
             third-party/qcustomplot/qcustomplot.h \
             third-party/ringbuffer/src/ringbuffer/c/ringbuffer.h \
             third-party/ringbuffer/src/ringbuffer/cpp/ringbufferwrapper.h \
